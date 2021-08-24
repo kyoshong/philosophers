@@ -6,7 +6,7 @@
 /*   By: hyospark <hyospark@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/18 01:16:17 by hyospark          #+#    #+#             */
-/*   Updated: 2021/08/18 01:47:59 by hyospark         ###   ########.fr       */
+/*   Updated: 2021/08/18 17:24:46 by hyospark         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,9 @@ void	set_life_rules(int argc, char const *argv[], t_philo *rules)
 
 void	starting_lifes(t_philo *rules)
 {
-	
+	pthread_mutex_t pthread;
+	pthread_create();
+
 }
 
 void	lifes(int argc, char const *argv[])

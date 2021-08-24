@@ -6,7 +6,7 @@
 /*   By: hyospark <hyospark@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/14 18:37:26 by hyospark          #+#    #+#             */
-/*   Updated: 2021/08/18 01:57:42 by hyospark         ###   ########.fr       */
+/*   Updated: 2021/08/18 13:26:20 by hyospark         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,8 @@ typedef struct s_philo
 	int	must_eat_num;
 }			t_philo;
 
+//error
 void	print_error(char *str);
-void	lifes(int argc, char const *argv[]);
 
 //utils
 int		space_check(char b);
