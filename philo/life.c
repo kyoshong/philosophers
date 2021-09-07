@@ -6,7 +6,7 @@
 /*   By: hyospark <hyospark@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/18 01:16:17 by hyospark          #+#    #+#             */
-/*   Updated: 2021/08/18 17:24:46 by hyospark         ###   ########.fr       */
+/*   Updated: 2021/09/06 21:07:39 by hyospark         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,13 +19,14 @@ void	set_life_rules(int argc, char const *argv[], t_philo *rules)
 	rules->time_to_eat = ft_atoi(argv[3]);
 	rules->time_to_sleep = ft_atoi(argv[4]);
 	if (argc == 6)
-		rules->must_eat_num = ft_atoi(argv[5]);
+		rules->num_of_must_eat = ft_atoi(argv[5]);
 }
 
 void	starting_lifes(t_philo *rules)
 {
-	pthread_mutex_t pthread;
-	pthread_create();
+	pthread_t *thread;
+
+	pthread_create(&thread, NULL, pickup, NULL);
 
 }
 
