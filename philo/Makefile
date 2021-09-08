@@ -6,27 +6,27 @@
 #    By: hyospark <hyospark@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/08/18 00:20:00 by hyospark          #+#    #+#              #
-#    Updated: 2021/08/18 02:06:15 by hyospark         ###   ########.fr        #
+#    Updated: 2021/09/08 20:56:48 by hyospark         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-NAME = philo.a
-FLAGS = -Wall -Wextra -Werror 
+NAME = philo
+FLAGS = -Wall -Wextra -Werror
 SOURCE = philo.c \
 		error.c \
 		life.c \
 		log.c \
 		utils.c \
+		life_loop.c \
 
 LIB = -lpthread
 OUT = philo
 OBJECT = $(SOURCE:.c=.o)
 
-.c:
-	gcc -c ${FLAGS} $<
-	
+.c.o:
+	gcc ${FLAGS} -c $< -o ${<:.c=.o}
 $(NAME): $(OBJECT)
-	gcc $(CFLAGS) $(LIB) $(OBJECT) -o $(OUT)
+	gcc ${FLAGS} $(LIB) $(OBJECT) -o $(OUT)
 
 all : $(NAME)
 clean:

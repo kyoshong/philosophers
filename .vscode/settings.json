@@ -3,6 +3,16 @@
 		"philo.h": "c",
 		"sstream": "c",
 		"__locale": "c",
-		"__threading_support": "cpp"
+		"__threading_support": "cpp",
+		"complex": "c",
+		"pthread.h": "c",
+		"mutex": "cpp",
+		"__bit_reference": "c",
+		"__string": "c",
+		"cstring": "c",
+		"memory.h": "c",
+		"time.h": "c",
+		"__mutex_base": "c",
+		"memory": "c"
 	}
 }
