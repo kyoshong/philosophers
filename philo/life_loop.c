@@ -6,7 +6,7 @@
 /*   By: hyospark <hyospark@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/06 21:04:38 by hyospark          #+#    #+#             */
-/*   Updated: 2021/09/11 23:01:57 by hyospark         ###   ########.fr       */
+/*   Updated: 2021/09/11 23:25:48 by hyospark         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,8 +86,13 @@ void	life_loop(t_philo philo)
 	last_eat = rules.stamp;
 	while ((!philo_died) && ((starv.tv_sec - last_eat.tv_sec) * 1000000) + ((starv.tv_usec - last_eat.tv_usec)) <= rules.time_to_die)
 	{
-		if (philo.left_hand && philo.right_hand)
+		// printf("id : %d %d %d\n", philo.philo_id, rules.fork_list[philo.left], rules.fork_list[philo.right]);
+		if ((rules.fork_list[philo.left] && rules.fork_list[philo.right]) || (philo.left_hand && philo.right_hand))
 		{
+			pthread_mutex_lock(&(rules.pick_up_all));
+			rules.fork_list[philo.left] = 0;
+			rules.fork_list[philo.right] = 0;
+			pthread_mutex_unlock(&(rules.pick_up_all));
 			gettimeofday(&fork, NULL);
 			if (check_starv_eat(fork, last_eat, philo.philo_id))
 				break ;
@@ -107,21 +112,6 @@ void	life_loop(t_philo philo)
 		}
 		else
 		{
-			if (rules.fork_list[philo.left] || rules.fork_list[philo.right])
-			{
-				pthread_mutex_lock(&(rules.pick_up));
-				if (rules.fork_list[philo.left])
-				{
-					rules.fork_list[philo.left] = 0;
-					philo.left_hand = 1;
-				}
-				if (rules.fork_list[philo.right])
-				{
-					rules.fork_list[philo.right] = 0;
-					philo.right_hand = 1;
-				}
-				pthread_mutex_unlock(&(rules.pick_up));
-			}
 			continue ;
 		}
 		gettimeofday(&sleep, NULL);
@@ -134,6 +124,21 @@ void	life_loop(t_philo philo)
 		printf("%ld %d is thinking\n", ((think.tv_sec - rules.stamp.tv_sec) * 1000)
 		+ ((think.tv_usec - rules.stamp.tv_usec) / 1000), philo.philo_id);
 		gettimeofday(&starv, NULL);
+		if (rules.fork_list[philo.left] || rules.fork_list[philo.right])
+		{
+			pthread_mutex_lock(&(rules.pick_up));
+			if (rules.fork_list[philo.left])
+			{
+				rules.fork_list[philo.left] = 0;
+				philo.left_hand = 1;
+			}
+			if (rules.fork_list[philo.right])
+			{
+				rules.fork_list[philo.right] = 0;
+				philo.right_hand = 1;
+			}
+			pthread_mutex_unlock(&(rules.pick_up));
+		}
 	}
 	printf("%ld %d died\n", ((starv.tv_sec - rules.stamp.tv_sec) * 1000) + ((starv.tv_usec - rules.stamp.tv_usec) / 1000), philo.philo_id);
 	philo_died = 1;

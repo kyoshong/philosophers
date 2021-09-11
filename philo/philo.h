@@ -6,7 +6,7 @@
 /*   By: hyospark <hyospark@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/14 18:37:26 by hyospark          #+#    #+#             */
-/*   Updated: 2021/09/11 22:45:16 by hyospark         ###   ########.fr       */
+/*   Updated: 2021/09/11 23:14:44 by hyospark         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ typedef struct s_rules
 	int *next_to;
 	struct timeval stamp;
 	pthread_mutex_t pick_up;
+	pthread_mutex_t pick_up_all;
 	pthread_mutex_t put_down;
 	int thread_id;
 }			t_rules;
