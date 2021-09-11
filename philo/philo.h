@@ -6,7 +6,7 @@
 /*   By: hyospark <hyospark@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/14 18:37:26 by hyospark          #+#    #+#             */
-/*   Updated: 2021/09/08 22:37:44 by hyospark         ###   ########.fr       */
+/*   Updated: 2021/09/11 22:45:16 by hyospark         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,9 +27,11 @@ typedef struct s_rules
 	int	time_to_sleep;
 	int	num_of_must_eat;
 	int *fork_list;
-	struct timeval stemp;
-	pthread_mutex_t lock;
-	int *ready_q;
+	int *next_to;
+	struct timeval stamp;
+	pthread_mutex_t pick_up;
+	pthread_mutex_t put_down;
+	int thread_id;
 }			t_rules;
 
 typedef struct s_philo
@@ -38,9 +40,12 @@ typedef struct s_philo
 	int count_eat;
 	int left;
 	int right;
+	int right_hand;
+	int left_hand;
 }			t_philo;
 
 t_rules rules;
+int		philo_died;
 
 //error
 void	print_error(char *str);
@@ -59,7 +64,7 @@ void	set_life_rules(int argc, char const *argv[]);
 void	lifes(int argc, char const *argv[]);
 
 //life_loop
-void	life_loop(t_philo *philo);
+void	life_loop(t_philo philo);
 
 //log
 void	log_fork(int time, int philo_num);
