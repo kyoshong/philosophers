@@ -6,7 +6,7 @@
 /*   By: hyospark <hyospark@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/18 01:16:17 by hyospark          #+#    #+#             */
-/*   Updated: 2021/09/11 23:14:52 by hyospark         ###   ########.fr       */
+/*   Updated: 2021/09/12 11:23:17 by hyospark         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,8 @@ void	set_life_rules(int argc, char const *argv[])
 	pthread_mutex_init(&(rules.pick_up), NULL);
 	pthread_mutex_init(&(rules.pick_up_all), NULL);
 	pthread_mutex_init(&(rules.put_down), NULL);
+	pthread_mutex_init(&(rules.change_left), NULL);
+	pthread_mutex_init(&(rules.change_right), NULL);
 }
 
 void	make_thread(void)
