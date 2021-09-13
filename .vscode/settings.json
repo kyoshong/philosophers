@@ -13,6 +13,8 @@
 		"memory.h": "c",
 		"time.h": "c",
 		"__mutex_base": "c",
-		"memory": "c"
-	}
+		"memory": "c",
+		"unistd.h": "c",
+		"chrono": "c"
+	},
 }

@@ -6,7 +6,7 @@
 /*   By: hyospark <hyospark@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/18 01:16:17 by hyospark          #+#    #+#             */
-/*   Updated: 2021/09/12 11:23:17 by hyospark         ###   ########.fr       */
+/*   Updated: 2021/09/13 18:04:33 by hyospark         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,13 +16,13 @@ void	*start_life(void *i)
 {
 	t_philo philo;
 
-	philo.philo_id = ++rules.thread_id;
+	philo.id = ++rules.thread_id;
 	philo.count_eat = 0;
-	if (philo.philo_id == 1)
+	if (philo.id == 1)
 		philo.right = rules.num_philosophers - 1;
 	else
-		philo.right = philo.philo_id - 2;
-	philo.left = philo.philo_id - 1;
+		philo.right = philo.id - 2;
+	philo.left = philo.id - 1;
 	philo.right_hand = 0;
 	philo.left_hand = 0;
 	life_loop(philo);
@@ -44,10 +44,8 @@ void	set_life_rules(int argc, char const *argv[])
 	else
 		rules.num_of_must_eat = -1;
 	pthread_mutex_init(&(rules.pick_up), NULL);
-	pthread_mutex_init(&(rules.pick_up_all), NULL);
 	pthread_mutex_init(&(rules.put_down), NULL);
-	pthread_mutex_init(&(rules.change_left), NULL);
-	pthread_mutex_init(&(rules.change_right), NULL);
+	pthread_mutex_init(&(rules.change), NULL);
 }
 
 void	make_thread(void)
@@ -59,6 +57,7 @@ void	make_thread(void)
 	if (thread == NULL)
 		print_error("MALLOC_THREAD_ERROR\n");
 	i = 0;
+	gettimeofday(&(rules.stamp), NULL);
 	while (i < rules.num_philosophers)
 	{
 		pthread_create(&thread[i], NULL, start_life, (void *)&i);

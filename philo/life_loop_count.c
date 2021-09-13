@@ -101,13 +101,13 @@
 // 				}
 // 			pthread_mutex_unlock(&(rules.pick_up));
 // 			gettimeofday(&fork, NULL);
-// 			if (check_starv_eat(fork, last_eat, philo.philo_id))
+// 			if (check_starv_eat(fork, last_eat, philo.id))
 // 				break ;
-// 			printf("%ld %d has taken a fork\n", ((fork.tv_sec - rules.stamp.tv_sec) * 1000)+ ((fork.tv_usec - rules.stamp.tv_usec) / 1000), philo.philo_id);
+// 			printf("%ld %d has taken a fork\n", ((fork.tv_sec - rules.stamp.tv_sec) * 1000)+ ((fork.tv_usec - rules.stamp.tv_usec) / 1000), philo.id);
 // 			gettimeofday(&eat, NULL);
 // 			gettimeofday(&last_eat, NULL);
 // 			printf("%ld %d is eating\n", ((eat.tv_sec - rules.stamp.tv_sec) * 1000) + ((eat.tv_usec - rules.stamp.tv_usec) / 1000),
-// 			philo.philo_id);
+// 			philo.id);
 // 			philo.count_eat++;
 // 			usleep(rules.time_to_eat);
 // 			pthread_mutex_lock(&(rules.put_down));
@@ -137,16 +137,16 @@
 // 			continue ;
 // 		}
 // 		gettimeofday(&sleep, NULL);
-// 		if (check_starv_sleep(sleep ,last_eat, philo.philo_id, rules.time_to_sleep))
+// 		if (check_starv_sleep(sleep ,last_eat, philo.id, rules.time_to_sleep))
 // 			break ;
 // 		printf("%ld %d is sleeping\n", ((sleep.tv_sec - rules.stamp.tv_sec) * 1000)
-// 		+ ((sleep.tv_usec - rules.stamp.tv_usec) / 1000), philo.philo_id);
+// 		+ ((sleep.tv_usec - rules.stamp.tv_usec) / 1000), philo.id);
 // 		usleep(rules.time_to_sleep);
 // 		gettimeofday(&think, NULL);
 // 		printf("%ld %d is thinking\n", ((think.tv_sec - rules.stamp.tv_sec) * 1000)
-// 		+ ((think.tv_usec - rules.stamp.tv_usec) / 1000), philo.philo_id);
+// 		+ ((think.tv_usec - rules.stamp.tv_usec) / 1000), philo.id);
 // 		gettimeofday(&starv, NULL);
 // 	}
-// 	printf("%ld %d died\n", ((starv.tv_sec - rules.stamp.tv_sec) * 1000) + ((starv.tv_usec - rules.stamp.tv_usec) / 1000), philo.philo_id);
+// 	printf("%ld %d died\n", ((starv.tv_sec - rules.stamp.tv_sec) * 1000) + ((starv.tv_usec - rules.stamp.tv_usec) / 1000), philo.id);
 // 	philo_died = 1;
 // }

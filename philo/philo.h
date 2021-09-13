@@ -6,7 +6,7 @@
 /*   By: hyospark <hyospark@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/14 18:37:26 by hyospark          #+#    #+#             */
-/*   Updated: 2021/09/12 14:17:24 by hyospark         ###   ########.fr       */
+/*   Updated: 2021/09/14 02:12:37 by hyospark         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,16 +30,14 @@ typedef struct s_rules
 	int *next_to;
 	struct timeval stamp;
 	pthread_mutex_t pick_up;
-	pthread_mutex_t pick_up_all;
 	pthread_mutex_t put_down;
-	pthread_mutex_t change_left;
-	pthread_mutex_t change_right;
+	pthread_mutex_t change;
 	int thread_id;
 }			t_rules;
 
 typedef struct s_philo
 {
-	int philo_id;
+	int id;
 	int count_eat;
 	int left;
 	int right;
@@ -67,6 +65,9 @@ void	set_life_rules(int argc, char const *argv[]);
 void	lifes(int argc, char const *argv[]);
 
 //life_loop
+int		check_starv_eat(long comp);
+int		check_starv_sleep(struct timeval present, \
+struct timeval last_eat, int id, int add_time);
 void	life_loop(t_philo philo);
 
 //log
@@ -76,4 +77,16 @@ void	log_sleeping(struct timeval sleep, int philo_num);
 void	log_thinking(struct timeval think, int philo_num);
 void	log_died(struct timeval died, int philo_num);
 
+//action
+void			preemp(t_philo *philo);
+struct timeval	eat(t_philo *philo, struct timeval last_eat);
+int				sleep(t_philo *philo, struct timeval last_eat);
+void			think(t_philo *philo);
+//cal
+long	cal_micro(struct timeval now, struct timeval std);
+long	cal_milli(struct timeval now, struct timeval std);
+
+//mutex_fork
+void	pick_up(t_philo philo);
+void	put_down(t_philo philo);
 #endif
