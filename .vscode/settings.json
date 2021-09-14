@@ -15,6 +15,7 @@
 		"__mutex_base": "c",
 		"memory": "c",
 		"unistd.h": "c",
-		"chrono": "c"
+		"chrono": "c",
+		"ios": "c"
 	},
 }

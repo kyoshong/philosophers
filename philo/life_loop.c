@@ -6,7 +6,7 @@
 /*   By: hyospark <hyospark@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/06 21:04:38 by hyospark          #+#    #+#             */
-/*   Updated: 2021/09/14 02:28:22 by hyospark         ###   ########.fr       */
+/*   Updated: 2021/09/14 13:22:31 by hyospark         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,10 +82,10 @@ void	life_loop(t_philo philo)
 		(philo.right_hand && rules.fork_list[philo.left]) ||
 		(philo.left_hand && rules.fork_list[philo.right]))
 		{
-			last_eat = eat(&philo, last_eat);
-			if (&last_eat == (struct timeval *)NULL)
+			last_eat = eating(&philo, last_eat);
+			if (&last_eat == NULL)
 				break ;
-			if (sleep(&philo, last_eat))
+			if (sleeping(&philo, last_eat))
 				break ;
 			think(&philo);
 		}

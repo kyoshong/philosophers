@@ -6,13 +6,13 @@
 /*   By: hyospark <hyospark@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/12 15:54:47 by hyospark          #+#    #+#             */
-/*   Updated: 2021/09/14 02:28:00 by hyospark         ###   ########.fr       */
+/*   Updated: 2021/09/14 13:22:37 by hyospark         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-void	preemp(t_philo *philo)
+void	preempt(t_philo *philo)
 {
 	pthread_mutex_lock(&(rules.change));
 	if (rules.fork_list[philo->left])
@@ -30,13 +30,13 @@ void	preemp(t_philo *philo)
 	pthread_mutex_unlock(&(rules.change));
 }
 
-struct timeval	eat(t_philo *philo, struct timeval last_eat)
+struct timeval	eating(t_philo *philo, struct timeval last_eat)
 {
 	long starved;
 	struct timeval eat;
 	struct timeval fork;
 
-	pick_up(*(philo));
+	pick_up(philo);
 	gettimeofday(&fork, NULL);
 	log_fork(fork, philo->id);
 	starved = cal_micro(fork, last_eat);
@@ -56,10 +56,10 @@ struct timeval	eat(t_philo *philo, struct timeval last_eat)
 		gettimeofday(&eat, NULL);
 		starved = cal_micro(eat, last_eat);
 	}
-	put_down(*(philo));
+	put_down(philo);
 }
 
-int	sleep(t_philo *philo, struct timeval last_eat)
+int	sleeping(t_philo *philo, struct timeval last_eat)
 {
 	struct timeval sleep;
 	struct timeval start;
