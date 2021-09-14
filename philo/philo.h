@@ -6,7 +6,7 @@
 /*   By: hyospark <hyospark@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/14 18:37:26 by hyospark          #+#    #+#             */
-/*   Updated: 2021/09/14 19:58:49 by hyospark         ###   ########.fr       */
+/*   Updated: 2021/09/15 00:49:52 by hyospark         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,20 +52,20 @@ t_rules rules;
 int		philo_died;
 
 //error
-int	print_error(char *str);
-int	free_print_error(char *str, void *arg);
+void	print_error(char *str);
+void	free_print_error(char *str, void *arg);
 
 //utils
 int		space_check(char b);
 int		ft_atoi(const char *str);
-int		isnum(char c);
+int		isnum(char *str, int i);
 int		ft_strlen(char const *str);
 
 //life
 void	*start_life(void *philo_arg);
-int	make_thread();
-int	set_life_rules(int argc, char const *argv[]);
-int	lifes(int argc, char const *argv[]);
+int		make_thread();
+int		set_rules(int argc, char const *argv[]);
+void	lifes(int argc, char const *argv[]);
 
 //life_loop
 int				check_starv_eat(long comp);

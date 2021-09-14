@@ -6,7 +6,7 @@
 /*   By: hyospark <hyospark@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/18 01:16:17 by hyospark          #+#    #+#             */
-/*   Updated: 2021/09/14 19:32:44 by hyospark         ###   ########.fr       */
+/*   Updated: 2021/09/15 00:50:30 by hyospark         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,10 +28,8 @@ void	*start_life(void *i)
 	return (i);
 }
 
-int	set_life_rules(int argc, char const *argv[])
+int	set_rules(int argc, char const *argv[])
 {
-	if (ft_atoi(argv[1]) < 1)
-		return (-1);
 	rules.num_philosophers = ft_atoi(argv[1]);
 	rules.fork_list = (int *)malloc(sizeof(int) * (rules.num_philosophers));
 	if (rules.fork_list == NULL)
@@ -83,15 +81,11 @@ int	make_thread(void)
 			usleep(100);
 		}
 	}
-	clean_all();
 	return (0);
 }
 
-int	lifes(int argc, char const *argv[])
+void	lifes(int argc, char const *argv[])
 {
-	if (set_life_rules(argc, argv) < 0)
-		return (-1);
-	if (make_thread() < 0)
-		return (-1);
-	return (0);
+	make_thread();
+	clean_all();
 }

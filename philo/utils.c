@@ -6,7 +6,7 @@
 /*   By: hyospark <hyospark@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/18 01:20:18 by hyospark          #+#    #+#             */
-/*   Updated: 2021/09/14 16:01:55 by hyospark         ###   ########.fr       */
+/*   Updated: 2021/09/15 00:35:42 by hyospark         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,10 +22,17 @@ int	ft_strlen(char const *str)
 	return (i);
 }
 
-int	isnum(char c)
+int	isnum(char *str, int i)
 {
-	if (c > 47 && c < 58)
-		return (1);
+	while (str[i] != '\0')
+	{
+		if ((str[i] > 47 && str[i] < 58))
+		{
+			print_error("ARG_IS_NOT_NUM");
+			return (1);
+		}
+		i++;
+	}
 	return (0);
 }
 
@@ -46,25 +53,16 @@ int	ft_atoi(const char *str)
 
 	i = 0;
 	num = 0;
-	while (space_check(str[i]) == 1 && str[i] != '\0')
+	while (space_check(str[i]))
 		i++;
-	start = i;
-	while (str[i] != '\0')
-	{
-		if (isnum(str[i]) == 0)
-		{
-			if (print_error("ARG_ERROR") < 0)
-				return (-1);
-		}
-		i++;
-	}
-	i = start;
-	while ((str[i] >= '0' && (str[i] <= '9') && str[i] != '\0'))
+	if (isnum(str, i) || str[i] == '\0')
+		return (-1);
+	while ((str[i] >= '0' && str[i] <= '9') && str[i] != '\0')
 	{
 		num = (num * 10) + ((str[i] - '0'));
 		if (num > 2147483647)
 		{
-			if (print_error("ARG_ERROR") < 0)
+			print_error("ARG_ERROR");
 			return (-1);
 		}
 		i++;
