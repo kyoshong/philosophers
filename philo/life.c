@@ -6,7 +6,7 @@
 /*   By: hyospark <hyospark@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/18 01:16:17 by hyospark          #+#    #+#             */
-/*   Updated: 2021/09/13 18:04:33 by hyospark         ###   ########.fr       */
+/*   Updated: 2021/09/14 15:04:52 by hyospark         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,7 @@ void	make_thread(void)
 		pthread_create(&thread[i], NULL, start_life, (void *)&i);
 		pthread_detach(thread[i]);
 		i++;
+		usleep(100);
 	}
 	while (!philo_died)
 	{

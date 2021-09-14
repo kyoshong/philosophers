@@ -6,7 +6,7 @@
 /*   By: hyospark <hyospark@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/06 21:04:38 by hyospark          #+#    #+#             */
-/*   Updated: 2021/09/14 13:22:31 by hyospark         ###   ########.fr       */
+/*   Updated: 2021/09/14 15:28:14 by hyospark         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,19 +78,24 @@ void	life_loop(t_philo philo)
 	{
 		gettimeofday(&starv, NULL);
 		starved = cal_micro(starv, last_eat);
-		if ((rules.fork_list[philo.left] && rules.fork_list[philo.right]) ||
-		(philo.right_hand && rules.fork_list[philo.left]) ||
-		(philo.left_hand && rules.fork_list[philo.right]))
+		pick_up(&philo);
+		if (philo.left_hand && philo.right_hand)
 		{
 			last_eat = eating(&philo, last_eat);
-			if (&last_eat == NULL)
+			if (last_eat.tv_sec == -1)
+			{
+				printf("wow\n");
 				break ;
+			}
 			if (sleeping(&philo, last_eat))
+			{
+				printf("wow\n");
 				break ;
-			think(&philo);
+			}
+			thinking(&philo);
 		}
-		if (starved + rules.time_to_eat >= rules.time_to_die)
-			preempt(&philo);
+		// if (starved >= rules.time_to_eat + rules.time_to_sleep)
+		// 	preempt(&philo);
 	}
 	printf("%ld %d over died\n", cal_milli(starv, rules.stamp), philo.id);
 	philo_died = 1;

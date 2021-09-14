@@ -6,7 +6,7 @@
 /*   By: hyospark <hyospark@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/12 15:54:47 by hyospark          #+#    #+#             */
-/*   Updated: 2021/09/14 13:22:37 by hyospark         ###   ########.fr       */
+/*   Updated: 2021/09/14 15:23:21 by hyospark         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ struct timeval	eating(t_philo *philo, struct timeval last_eat)
 	struct timeval eat;
 	struct timeval fork;
 
-	pick_up(philo);
+
 	gettimeofday(&fork, NULL);
 	log_fork(fork, philo->id);
 	starved = cal_micro(fork, last_eat);
@@ -44,7 +44,7 @@ struct timeval	eating(t_philo *philo, struct timeval last_eat)
 	{
 		log_died(fork, philo->id);
 		printf("eat died\n");
-		eat = *(struct timeval *)NULL;
+		eat.tv_sec = -1;
 		return (eat);
 	}
 	gettimeofday(&eat, NULL);
@@ -57,6 +57,7 @@ struct timeval	eating(t_philo *philo, struct timeval last_eat)
 		starved = cal_micro(eat, last_eat);
 	}
 	put_down(philo);
+	return (eat);
 }
 
 int	sleeping(t_philo *philo, struct timeval last_eat)
@@ -71,7 +72,7 @@ int	sleeping(t_philo *philo, struct timeval last_eat)
 	{
 		return (1);
 	}
-	gettimeofday(&eat, NULL);
+	gettimeofday(&start, NULL);
 	starved = 0;
 	while (starved <= rules.time_to_sleep)
 	{
@@ -81,7 +82,7 @@ int	sleeping(t_philo *philo, struct timeval last_eat)
 	return (0);
 }
 
-void	think(t_philo *philo)
+void	thinking(t_philo *philo)
 {
 	struct timeval think;
 

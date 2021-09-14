@@ -6,7 +6,7 @@
 /*   By: hyospark <hyospark@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/14 18:37:26 by hyospark          #+#    #+#             */
-/*   Updated: 2021/09/14 13:22:46 by hyospark         ###   ########.fr       */
+/*   Updated: 2021/09/14 14:42:55 by hyospark         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ void	log_died(struct timeval died, int philo_num);
 
 //action
 void			preempt(t_philo *philo);
-struct timeval	eat(t_philo *philo, struct timeval last_eat);
+struct timeval	eating(t_philo *philo, struct timeval last_eat);
 int				sleeping(t_philo *philo, struct timeval last_eat);
 void			thinking(t_philo *philo);
 //cal
