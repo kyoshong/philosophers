@@ -6,7 +6,7 @@
 /*   By: hyospark <hyospark@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/18 01:20:18 by hyospark          #+#    #+#             */
-/*   Updated: 2021/08/18 02:07:00 by hyospark         ###   ########.fr       */
+/*   Updated: 2021/09/14 16:01:55 by hyospark         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,10 @@ int	ft_atoi(const char *str)
 	while (str[i] != '\0')
 	{
 		if (isnum(str[i]) == 0)
-			print_error("ARG_ERROR");
+		{
+			if (print_error("ARG_ERROR") < 0)
+				return (-1);
+		}
 		i++;
 	}
 	i = start;
@@ -60,7 +63,10 @@ int	ft_atoi(const char *str)
 	{
 		num = (num * 10) + ((str[i] - '0'));
 		if (num > 2147483647)
-			print_error("ARG_ERROR");
+		{
+			if (print_error("ARG_ERROR") < 0)
+			return (-1);
+		}
 		i++;
 	}
 	return (num);

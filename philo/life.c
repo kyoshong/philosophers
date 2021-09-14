@@ -6,7 +6,7 @@
 /*   By: hyospark <hyospark@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/18 01:16:17 by hyospark          #+#    #+#             */
-/*   Updated: 2021/09/14 15:04:52 by hyospark         ###   ########.fr       */
+/*   Updated: 2021/09/14 19:32:44 by hyospark         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@ void	*start_life(void *i)
 	t_philo philo;
 
 	philo.id = ++rules.thread_id;
-	philo.count_eat = 0;
 	if (philo.id == 1)
 		philo.right = rules.num_philosophers - 1;
 	else
@@ -29,8 +28,10 @@ void	*start_life(void *i)
 	return (i);
 }
 
-void	set_life_rules(int argc, char const *argv[])
+int	set_life_rules(int argc, char const *argv[])
 {
+	if (ft_atoi(argv[1]) < 1)
+		return (-1);
 	rules.num_philosophers = ft_atoi(argv[1]);
 	rules.fork_list = (int *)malloc(sizeof(int) * (rules.num_philosophers));
 	if (rules.fork_list == NULL)
@@ -39,16 +40,20 @@ void	set_life_rules(int argc, char const *argv[])
 	rules.time_to_die = ft_atoi(argv[2]) * 1000;
 	rules.time_to_eat = ft_atoi(argv[3]) * 1000;
 	rules.time_to_sleep = ft_atoi(argv[4]) * 1000;
-	if (argc == 6 && argv[5] >= 0)
+	if ((argc == 6) && (ft_atoi(argv[5]) >= 0))
 		rules.num_of_must_eat = ft_atoi(argv[5]);
 	else
 		rules.num_of_must_eat = -1;
-	pthread_mutex_init(&(rules.pick_up), NULL);
+	rules.full_philos = 0;
+	pthread_mutex_init(&(rules.pick_up_all), NULL);
+	pthread_mutex_init(&(rules.pick_up_left), NULL);
+	pthread_mutex_init(&(rules.pick_up_right), NULL);
+	pthread_mutex_init(&(rules.print_log), NULL);
 	pthread_mutex_init(&(rules.put_down), NULL);
-	pthread_mutex_init(&(rules.change), NULL);
+	return (0);
 }
 
-void	make_thread(void)
+int	make_thread(void)
 {
 	pthread_t	*thread;
 	int			i;
@@ -58,20 +63,35 @@ void	make_thread(void)
 		print_error("MALLOC_THREAD_ERROR\n");
 	i = 0;
 	gettimeofday(&(rules.stamp), NULL);
-	while (i < rules.num_philosophers)
+	if (rules.num_of_must_eat > -1)
 	{
-		pthread_create(&thread[i], NULL, start_life, (void *)&i);
-		pthread_detach(thread[i]);
-		i++;
-		usleep(100);
+		while (i < rules.num_philosophers)
+		{
+			pthread_create(&thread[i], NULL, start_life, (void *)&i);
+			pthread_detach(thread[i]);
+			i++;
+			usleep(100);
+		}
 	}
-	while (!philo_died)
+	else
 	{
+		while (i < rules.num_philosophers)
+		{
+			pthread_create(&thread[i], NULL, start_life_count, (void *)&i);
+			pthread_detach(thread[i]);
+			i++;
+			usleep(100);
+		}
 	}
+	clean_all();
+	return (0);
 }
 
-void	lifes(int argc, char const *argv[])
+int	lifes(int argc, char const *argv[])
 {
-	set_life_rules(argc, argv);
-	make_thread();
+	if (set_life_rules(argc, argv) < 0)
+		return (-1);
+	if (make_thread() < 0)
+		return (-1);
+	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: hyospark <hyospark@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/14 18:37:26 by hyospark          #+#    #+#             */
-/*   Updated: 2021/09/14 14:42:55 by hyospark         ###   ########.fr       */
+/*   Updated: 2021/09/14 19:58:49 by hyospark         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,10 +29,13 @@ typedef struct s_rules
 	int *fork_list;
 	int *next_to;
 	struct timeval stamp;
-	pthread_mutex_t pick_up;
+	pthread_mutex_t pick_up_all;
+	pthread_mutex_t pick_up_left;
+	pthread_mutex_t pick_up_right;
 	pthread_mutex_t put_down;
-	pthread_mutex_t change;
+	pthread_mutex_t print_log;
 	int thread_id;
+	int full_philos;
 }			t_rules;
 
 typedef struct s_philo
@@ -49,8 +52,8 @@ t_rules rules;
 int		philo_died;
 
 //error
-void	print_error(char *str);
-void	free_print_error(char *str, void *arg);
+int	print_error(char *str);
+int	free_print_error(char *str, void *arg);
 
 //utils
 int		space_check(char b);
@@ -60,15 +63,19 @@ int		ft_strlen(char const *str);
 
 //life
 void	*start_life(void *philo_arg);
-void	make_thread();
-void	set_life_rules(int argc, char const *argv[]);
-void	lifes(int argc, char const *argv[]);
+int	make_thread();
+int	set_life_rules(int argc, char const *argv[]);
+int	lifes(int argc, char const *argv[]);
 
 //life_loop
 int				check_starv_eat(long comp);
 int				check_starv_sleep(struct timeval present, \
 struct timeval	last_eat, int id, int add_time);
 void			life_loop(t_philo philo);
+
+//life_loop_count
+void	*start_life_count(void *i);
+void	life_loop_count(t_philo philo);
 
 //log
 void	log_fork(struct timeval fork, int philo_num);
@@ -82,6 +89,7 @@ void			preempt(t_philo *philo);
 struct timeval	eating(t_philo *philo, struct timeval last_eat);
 int				sleeping(t_philo *philo, struct timeval last_eat);
 void			thinking(t_philo *philo);
+
 //cal
 long	cal_micro(struct timeval now, struct timeval std);
 long	cal_milli(struct timeval now, struct timeval std);
@@ -89,4 +97,7 @@ long	cal_milli(struct timeval now, struct timeval std);
 //mutex_fork
 void	pick_up(t_philo *philo);
 void	put_down(t_philo *philo);
+
+void	clean_all(void);
+
 #endif

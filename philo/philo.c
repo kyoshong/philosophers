@@ -6,7 +6,7 @@
 /*   By: hyospark <hyospark@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/14 18:37:28 by hyospark          #+#    #+#             */
-/*   Updated: 2021/09/08 22:36:31 by hyospark         ###   ########.fr       */
+/*   Updated: 2021/09/14 16:00:39 by hyospark         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ int	main(int argc, char const *argv[])
 		print_error("TOO_FEW_ARG");
 	if (argc > 6)
 		print_error("TOO_MANY_ARG");
-	lifes(argc, argv);
-	return 0;
+	if (lifes(argc, argv) < 0)
+		return (-1);
+	return (0);
 }

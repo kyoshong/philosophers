@@ -6,7 +6,7 @@
 #    By: hyospark <hyospark@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/08/18 00:20:00 by hyospark          #+#    #+#              #
-#    Updated: 2021/09/14 14:49:19 by hyospark         ###   ########.fr        #
+#    Updated: 2021/09/14 17:11:03 by hyospark         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,9 +18,11 @@ SOURCE = philo.c \
 		log.c \
 		utils.c \
 		life_loop.c \
+		life_loop_count.c \
 		mutex_fork.c \
 		action.c \
 		cal.c \
+		clean.c \
 
 LIB = -lpthread
 OUT = philo
