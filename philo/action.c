@@ -6,7 +6,7 @@
 /*   By: hyospark <hyospark@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/12 15:54:47 by hyospark          #+#    #+#             */
-/*   Updated: 2021/09/14 19:53:31 by hyospark         ###   ########.fr       */
+/*   Updated: 2021/09/15 21:13:56 by hyospark         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,18 +19,18 @@ struct timeval	eating(t_philo *philo, struct timeval last_eat)
 	struct timeval fork;
 
 	gettimeofday(&fork, NULL);
-	log_fork(fork, philo->id);
+	log_fork(philo, fork);
 	starved = cal_micro(fork, last_eat);
-	if (check_starv_eat(starved))
+	if (check_starv_eat(starved, philo))
 	{
 		fork.tv_sec = -1;
 		return (fork);
 	}
 	gettimeofday(&eat, NULL);
 	last_eat = eat;
-	log_eating(eat, philo->id);
+	log_eating(philo, eat);
 	starved = 0;
-	while (starved <= rules.time_to_eat + 100)
+	while (starved <= philo->rules->time_to_eat + 100)
 	{
 		gettimeofday(&eat, NULL);
 		starved = cal_micro(eat, last_eat);
@@ -46,12 +46,12 @@ int	sleeping(t_philo *philo, struct timeval last_eat)
 	long			starved;
 
 	gettimeofday(&sleeping, NULL);
-	log_sleeping(sleeping, philo->id);
-	if (check_starv_sleep(sleeping ,last_eat, philo->id, rules.time_to_sleep))
+	log_sleeping(philo, sleeping);
+	if (check_starv_sleep(sleeping ,last_eat, philo))
 		return (1);
 	gettimeofday(&start, NULL);
 	starved = 0;
-	while (starved <= rules.time_to_sleep)
+	while (starved <= philo->rules->time_to_sleep)
 	{
 		gettimeofday(&start, NULL);
 		starved = cal_micro(start, sleeping);
@@ -64,5 +64,5 @@ void	thinking(t_philo *philo)
 	struct timeval think;
 
 	gettimeofday(&think, NULL);
-	log_thinking(think, philo->id);
+	log_thinking(philo, think);
 }

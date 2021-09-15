@@ -6,7 +6,7 @@
 /*   By: hyospark <hyospark@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/18 00:58:14 by hyospark          #+#    #+#             */
-/*   Updated: 2021/09/15 00:29:40 by hyospark         ###   ########.fr       */
+/*   Updated: 2021/09/15 21:22:43 by hyospark         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,11 @@
 
 void	print_error(char *str)
 {
-	printf("%s", str);
+	printf("%s\n", str);
 }
 
 void	free_print_error(char *str, void *arg)
 {
-	printf("%s", str);
+	printf("%s\n", str);
 	free(&arg);
 }

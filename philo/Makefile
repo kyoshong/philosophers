@@ -6,7 +6,7 @@
 #    By: hyospark <hyospark@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/08/18 00:20:00 by hyospark          #+#    #+#              #
-#    Updated: 2021/09/14 17:11:03 by hyospark         ###   ########.fr        #
+#    Updated: 2021/09/15 14:11:24 by hyospark         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,7 +14,7 @@ NAME = philo
 FLAGS = -Wall -Wextra -Werror
 SOURCE = philo.c \
 		error.c \
-		life.c \
+		set_life.c \
 		log.c \
 		utils.c \
 		life_loop.c \
@@ -22,7 +22,8 @@ SOURCE = philo.c \
 		mutex_fork.c \
 		action.c \
 		cal.c \
-		clean.c \
+		mutex.c \
+		check_starved.c
 
 LIB = -lpthread
 OUT = philo

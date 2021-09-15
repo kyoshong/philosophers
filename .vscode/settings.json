@@ -16,6 +16,8 @@
 		"memory": "c",
 		"unistd.h": "c",
 		"chrono": "c",
-		"ios": "c"
+		"ios": "c",
+		"ratio": "c",
+		"locale": "c"
 	},
 }

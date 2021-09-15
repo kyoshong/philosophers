@@ -6,7 +6,7 @@
 /*   By: hyospark <hyospark@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/14 18:37:26 by hyospark          #+#    #+#             */
-/*   Updated: 2021/09/15 00:49:52 by hyospark         ###   ########.fr       */
+/*   Updated: 2021/09/15 21:22:10 by hyospark         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,15 +27,16 @@ typedef struct s_rules
 	int	time_to_sleep;
 	int	num_of_must_eat;
 	int *fork_list;
-	int *next_to;
 	struct timeval stamp;
 	pthread_mutex_t pick_up_all;
 	pthread_mutex_t pick_up_left;
 	pthread_mutex_t pick_up_right;
 	pthread_mutex_t put_down;
 	pthread_mutex_t print_log;
+	pthread_mutex_t counting_eat;
 	int thread_id;
 	int full_philos;
+	int		philo_died;
 }			t_rules;
 
 typedef struct s_philo
@@ -46,10 +47,10 @@ typedef struct s_philo
 	int right;
 	int right_hand;
 	int left_hand;
+	t_rules *rules;
+	struct timeval	starv;
+	struct timeval	last_eat;
 }			t_philo;
-
-t_rules rules;
-int		philo_died;
 
 //error
 void	print_error(char *str);
@@ -62,27 +63,31 @@ int		isnum(char *str, int i);
 int		ft_strlen(char const *str);
 
 //life
-void	*start_life(void *philo_arg);
-int		make_thread();
-int		set_rules(int argc, char const *argv[]);
+int		init_mutex();
+int		mutex_destroy_all(t_rules *rules);
+int		set_rules(int argc, char const *argv[], t_rules *rules);
 void	lifes(int argc, char const *argv[]);
 
+//check_starved
+int	check_starv_eat(long comp, t_philo *philo);
+int	check_starv_sleep(struct timeval begin, struct timeval end, t_philo *ph);
+
 //life_loop
-int				check_starv_eat(long comp);
-int				check_starv_sleep(struct timeval present, \
-struct timeval	last_eat, int id, int add_time);
-void			life_loop(t_philo philo);
+int			make_thread(t_rules *rules);
+t_philo		set_philos(t_rules *rules, int i);
+void		*life_loop(void *philo);
 
 //life_loop_count
+int		make_limit_thread(t_rules *rules);
 void	*start_life_count(void *i);
-void	life_loop_count(t_philo philo);
+void	*life_loop_count(void *philos);
 
 //log
-void	log_fork(struct timeval fork, int philo_num);
-void	log_eating(struct timeval eat, int philo_num);
-void	log_sleeping(struct timeval sleep, int philo_num);
-void	log_thinking(struct timeval think, int philo_num);
-void	log_died(struct timeval died, int philo_num);
+void	log_fork(t_philo *philo, struct timeval fork);
+void	log_eating(t_philo *philo, struct timeval eat);
+void	log_sleeping(t_philo *philo, struct timeval sleep);
+void	log_thinking(t_philo *philo, struct timeval think);
+void	log_died(t_philo *philo, struct timeval died);
 
 //action
 void			preempt(t_philo *philo);
@@ -96,6 +101,9 @@ long	cal_milli(struct timeval now, struct timeval std);
 
 //mutex_fork
 void	pick_up(t_philo *philo);
+void	pick_up_all(t_philo *philo);
+void	pick_up_right(t_philo *philo);
+void	pick_up_left(t_philo *philo);
 void	put_down(t_philo *philo);
 
 void	clean_all(void);

@@ -6,7 +6,7 @@
 /*   By: hyospark <hyospark@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/18 01:20:18 by hyospark          #+#    #+#             */
-/*   Updated: 2021/09/15 00:35:42 by hyospark         ###   ########.fr       */
+/*   Updated: 2021/09/15 21:23:27 by hyospark         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,11 +26,8 @@ int	isnum(char *str, int i)
 {
 	while (str[i] != '\0')
 	{
-		if ((str[i] > 47 && str[i] < 58))
-		{
-			print_error("ARG_IS_NOT_NUM");
+		if (!(str[i] > 47 && str[i] < 58))
 			return (1);
-		}
 		i++;
 	}
 	return (0);
@@ -49,13 +46,12 @@ int	ft_atoi(const char *str)
 {
 	long	i;
 	long	num;
-	long	start;
 
 	i = 0;
 	num = 0;
 	while (space_check(str[i]))
 		i++;
-	if (isnum(str, i) || str[i] == '\0')
+	if (isnum((char *)str, i) || str[i] == '\0')
 		return (-1);
 	while ((str[i] >= '0' && str[i] <= '9') && str[i] != '\0')
 	{
