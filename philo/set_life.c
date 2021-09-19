@@ -6,7 +6,7 @@
 /*   By: hyospark <hyospark@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/18 01:16:17 by hyospark          #+#    #+#             */
-/*   Updated: 2021/09/15 21:29:14 by hyospark         ###   ########.fr       */
+/*   Updated: 2021/09/17 19:53:12 by hyospark         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,8 @@ void	lifes(int argc, char const *argv[])
 		error = make_thread(&rules);
 	if (error)
 	{
-		mutex_destroy_all(&rules);
+		// mutex_destroy_all(&rules);
 		free_print_error("THREAD_ERROR", (void *)rules.fork_list);
 	}
+	// free_all();
 }

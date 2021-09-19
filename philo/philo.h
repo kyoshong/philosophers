@@ -6,7 +6,7 @@
 /*   By: hyospark <hyospark@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/14 18:37:26 by hyospark          #+#    #+#             */
-/*   Updated: 2021/09/15 21:22:10 by hyospark         ###   ########.fr       */
+/*   Updated: 2021/09/17 19:34:00 by hyospark         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ typedef struct s_rules
 	pthread_mutex_t counting_eat;
 	int thread_id;
 	int full_philos;
-	int		philo_died;
+	int philo_died;
 }			t_rules;
 
 typedef struct s_philo
@@ -63,7 +63,7 @@ int		isnum(char *str, int i);
 int		ft_strlen(char const *str);
 
 //life
-int		init_mutex();
+int		init_mutex(t_rules *rules);
 int		mutex_destroy_all(t_rules *rules);
 int		set_rules(int argc, char const *argv[], t_rules *rules);
 void	lifes(int argc, char const *argv[]);

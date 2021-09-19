@@ -6,7 +6,7 @@
 /*   By: hyospark <hyospark@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/06 21:04:38 by hyospark          #+#    #+#             */
-/*   Updated: 2021/09/15 21:31:24 by hyospark         ###   ########.fr       */
+/*   Updated: 2021/09/17 19:40:55 by hyospark         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void	*life_loop(void *philos)
 	gettimeofday(&(philo->starv), NULL);
 	philo->last_eat = philo->rules->stamp;
 	starved = cal_micro(philo->starv, philo->last_eat);
-	while ((!philo->rules->philo_died) \
+	while (!(philo->rules->philo_died) \
 	&& (starved <= philo->rules->time_to_die))
 	{
 		gettimeofday(&(philo->starv), NULL);
@@ -64,22 +64,18 @@ int create_thread(pthread_t *thread, t_philo *philos, t_rules *rules)
 	while (i < rules->num_philosophers)
 	{
 		philos[i] = set_philos(rules, i);
-		if (pthread_create(&thread[i], NULL, life_loop, (void *)&philos[i]) != 0)
+		philos[i].rules = rules;
+		if (pthread_create(&thread[i], NULL, life_loop, (void *)&philos[i]) != 0 \
+		|| pthread_detach(thread[i]) != 0)
 		{
 			free(thread);
 			return (1);
 		}
-		if (pthread_detach(thread[i]) != 0)
-		{
-			free(thread);
-			return (1);
-		}
-		usleep(100);
 		i++;
+		usleep(100);
 	}
 	while (!rules->philo_died)
 	{
-		// printf("%d", rules->philo_died);
 	}
 	return (0);
 }
@@ -95,7 +91,7 @@ int	make_thread(t_rules *rules)
 	philos = (t_philo *)malloc(sizeof(t_philo) * rules->num_philosophers);
 	if (philos == NULL)
 	{
-		free_print_error("CREATE_PHILOS_ERROR", (void *)rules->fork_list);
+		print_error("CREATE_PHILOS_ERROR");
 		free(thread);
 		return (1);
 	}
@@ -103,7 +99,7 @@ int	make_thread(t_rules *rules)
 	{
 		free(thread);
 		free(philos);
-		free_print_error("CREATE_THREAD_ERROR", (void *)rules->fork_list);
+		print_error("CREATE_THREAD_ERROR");
 		return (1);
 	}
 	return (0);

@@ -6,7 +6,7 @@
 /*   By: hyospark <hyospark@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/15 13:41:20 by hyospark          #+#    #+#             */
-/*   Updated: 2021/09/15 21:21:05 by hyospark         ###   ########.fr       */
+/*   Updated: 2021/09/17 19:47:33 by hyospark         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,12 +32,12 @@ int	check_starv_sleep(struct timeval begin, struct timeval end, t_philo *ph)
 		if (comp > ph->rules->time_to_die)
 		{
 			printf("just died %d\n", ph->id);
+			log_died(ph, begin);
 		}
 		else
 		{
 			printf("sleep over dead %d\n", ph->id);
-			printf("%ld %d is sleeping \n", cal_milli(begin, \
-			ph->rules->stamp), ph->id);
+			log_sleeping(ph, begin);
 			while (comp <= ph->rules->time_to_die)
 			{
 				gettimeofday(&begin, NULL);

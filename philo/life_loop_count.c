@@ -6,7 +6,7 @@
 /*   By: hyospark <hyospark@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/14 15:42:31 by hyospark          #+#    #+#             */
-/*   Updated: 2021/09/15 21:27:00 by hyospark         ###   ########.fr       */
+/*   Updated: 2021/09/17 19:23:38 by hyospark         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,12 +52,8 @@ int	create_thread_limit(pthread_t *thread, t_philo *philos, t_rules *rules)
 	while (i < rules->num_philosophers)
 	{
 		philos[i] = set_philos(rules, i);
-		if (pthread_create(&thread[i], NULL, life_loop_count, (void *)&i) != 0)
-		{
-			free(thread);
-			return (1);
-		}
-		if (pthread_detach(thread[i]) != 0)
+		if (pthread_create(&thread[i], NULL, life_loop_count, (void *)&i) != 0 \
+		 || pthread_detach(thread[i]) != 0)
 		{
 			free(thread);
 			return (1);
@@ -82,7 +78,7 @@ int	make_limit_thread(t_rules *rules)
 	philos = (t_philo *)malloc(sizeof(t_philo) * rules->num_philosophers);
 	if (philos == NULL)
 	{
-		free_print_error("CREATE_PHILOS_ERROR", (void *)rules->fork_list);
+		print_error("CREATE_PHILOS_ERROR");
 		free(thread);
 		return (1);
 	}
@@ -90,7 +86,7 @@ int	make_limit_thread(t_rules *rules)
 	{
 		free(thread);
 		free(philos);
-		free_print_error("CREATE_THREAD_ERROR", (void *)rules->fork_list);
+		print_error("CREATE_THREAD_ERROR");
 		return (1);
 	}
 	return (0);
