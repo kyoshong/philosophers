@@ -6,40 +6,43 @@
 /*   By: hyospark <hyospark@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/14 15:42:31 by hyospark          #+#    #+#             */
-/*   Updated: 2021/09/17 19:23:38 by hyospark         ###   ########.fr       */
+/*   Updated: 2021/10/03 01:43:12 by hyospark         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
+void	count_eat(t_philo *philo)
+{
+	if (++philo->count_eat == philo->rules->num_of_must_eat)
+	{
+		pthread_mutex_lock(&philo->rules->counting_eat);
+		philo->rules->full_philos++;
+		if (philo->rules->full_philos == philo->rules->num_philosophers)
+			philo->rules->philo_died = 1;
+		pthread_mutex_unlock(&philo->rules->counting_eat);
+	}
+}
+
 void	*life_loop_count(void *philos)
 {
-	t_philo *philo;
-	long	starved;
+	t_philo	*philo;
 
-	philo = (void *)philos;
-	gettimeofday(&(philo->starv), NULL);
-	philo->last_eat = philo->rules->stamp;
-	starved = cal_micro(philo->starv, philo->last_eat);
-	while ((!philo->rules->philo_died) && (starved <= philo->rules->time_to_die))
+	philo = philos;
+	gettimeofday(&(philo->last_eat), NULL);
+	while (!(philo->rules->philo_died))
 	{
-		gettimeofday(&(philo->starv), NULL);
-		starved = cal_micro(philo->starv, philo->last_eat);
 		pick_up(philo);
-		if (philo->left_hand && philo->right_hand)
-		{
-			philo->last_eat = eating(philo, philo->last_eat);
-			if (++philo->count_eat == philo->rules->num_of_must_eat)
-			{
-				philo->rules->full_philos++;
-				break ;
-			}
-			if (philo->last_eat.tv_sec == -1 || sleeping(philo, philo->last_eat))
-				break ;
-			thinking(philo);
-		}
+		eating(philo);
+		count_eat(philo);
+		sleeping(philo);
+		thinking(philo);
 	}
-	log_died(philo, philo->starv);
+	if (philo->rules->full_philos != philo->rules->num_philosophers)
+		log_died(philo);
+	pthread_mutex_lock(&(philo->rules->count_over));
+	philo->rules->philo_over++;
+	pthread_mutex_unlock(&(philo->rules->count_over));
 	return (philos);
 }
 
@@ -52,18 +55,20 @@ int	create_thread_limit(pthread_t *thread, t_philo *philos, t_rules *rules)
 	while (i < rules->num_philosophers)
 	{
 		philos[i] = set_philos(rules, i);
-		if (pthread_create(&thread[i], NULL, life_loop_count, (void *)&i) != 0 \
-		 || pthread_detach(thread[i]) != 0)
+		if (pthread_create(&thread[i], NULL, life_loop_count, \
+		(void *)&philos[i]) != 0 || pthread_detach(thread[i]) != 0)
 		{
 			free(thread);
 			return (1);
 		}
+		usleep(10);
 		i++;
-		usleep(100);
 	}
-	while (!rules->philo_died)
+	while (rules->philo_over < rules->num_philosophers)
 	{
 	}
+	if (rules->full_philos == rules->num_philosophers)
+		printf("ㄲㅓ어억\n");
 	return (0);
 }
 
@@ -83,11 +88,8 @@ int	make_limit_thread(t_rules *rules)
 		return (1);
 	}
 	if (create_thread_limit(thread, philos, rules))
-	{
-		free(thread);
-		free(philos);
 		print_error("CREATE_THREAD_ERROR");
-		return (1);
-	}
+	free(thread);
+	free(philos);
 	return (0);
 }

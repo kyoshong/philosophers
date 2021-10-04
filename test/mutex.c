@@ -5,23 +5,6 @@
 
 pthread_mutex_t lock;
 
-// void *print_log(void *i)
-// {
-// 	struct timeval tv;
-// 	struct timeval end;
-
-// 	int j = *(int *)i + 1;
-// 	gettimeofday(&tv, NULL);
-// 	pthread_mutex_lock(&lock);
-// 	printf("Start %d thread\n", j);
-// 	printf("End %d thread\n", j);
-// 	pthread_mutex_unlock(&lock);
-// 	gettimeofday(&end, NULL);
-// 	printf("%ld\n", (((end.tv_sec - tv.tv_sec) * 1000) + ((end.tv_usec + tv.tv_usec) / 1000)));
-// 	printf("%d : %ld\n", j,end.tv_sec);
-// 	return NULL;
-// }
-
 int main()
 {
 	pthread_t thread[3];

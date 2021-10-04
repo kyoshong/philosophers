@@ -6,14 +6,13 @@
 #    By: hyospark <hyospark@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/08/18 00:20:00 by hyospark          #+#    #+#              #
-#    Updated: 2021/09/15 14:11:24 by hyospark         ###   ########.fr        #
+#    Updated: 2021/10/01 14:15:37 by hyospark         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = philo
 FLAGS = -Wall -Wextra -Werror
 SOURCE = philo.c \
-		error.c \
 		set_life.c \
 		log.c \
 		utils.c \

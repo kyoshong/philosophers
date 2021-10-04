@@ -6,22 +6,17 @@
 /*   By: hyospark <hyospark@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/14 18:37:28 by hyospark          #+#    #+#             */
-/*   Updated: 2021/09/15 21:25:32 by hyospark         ###   ########.fr       */
+/*   Updated: 2021/10/03 02:06:50 by hyospark         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-int check_args(int argc, char const *argv[])
+int	check_args(int argc, char const *argv[])
 {
-	if (argc < 5)
+	if (argc < 5 || argc > 6)
 	{
-		print_error("TOO_FEW_ARG");
-		return (1);
-	}
-	if (argc > 6)
-	{
-		print_error("TOO_MANY_ARG");
+		print_error("ARG_ERROR");
 		return (1);
 	}
 	argc--;
@@ -42,5 +37,10 @@ int	main(int argc, char const *argv[])
 	if (check_args(argc, argv))
 		return (1);
 	lifes(argc, argv);
+	while (1)
+	{
+		/* code */
+	}
+	
 	return (0);
 }

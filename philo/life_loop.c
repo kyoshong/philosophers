@@ -6,7 +6,7 @@
 /*   By: hyospark <hyospark@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/06 21:04:38 by hyospark          #+#    #+#             */
-/*   Updated: 2021/09/17 19:40:55 by hyospark         ###   ########.fr       */
+/*   Updated: 2021/10/03 01:42:23 by hyospark         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,34 +14,29 @@
 
 void	*life_loop(void *philos)
 {
-	t_philo *philo;
-	long	starved;
+	t_philo	*philo;
 
-	philo = (void *)philos;
-	gettimeofday(&(philo->starv), NULL);
+	philo = philos;
 	philo->last_eat = philo->rules->stamp;
-	starved = cal_micro(philo->starv, philo->last_eat);
-	while (!(philo->rules->philo_died) \
-	&& (starved <= philo->rules->time_to_die))
+	if (philo->left == philo->right)
 	{
-		gettimeofday(&(philo->starv), NULL);
-		starved = cal_micro(philo->starv, philo->last_eat);
-		pick_up(philo);
-		if (philo->left_hand && philo->right_hand)
-		{
-			philo->last_eat = eating(philo, philo->last_eat);
-			if (philo->last_eat.tv_sec == -1 || sleeping(philo, philo->last_eat))
-				break ;
-			thinking(philo);
-		}
+		usleep(philo->rules->time_to_die);
+		log_died(philo);
 	}
-	log_died(philo, philo->starv);
+	while (!(philo->rules->philo_died))
+	{
+		pick_up(philo);
+		eating(philo);
+	}
+	pthread_mutex_lock(&(philo->rules->count_over));
+	++philo->rules->philo_over;
+	pthread_mutex_unlock(&(philo->rules->count_over));
 	return (philos);
 }
 
-t_philo set_philos(t_rules *rules, int i)
+t_philo	set_philos(t_rules *rules, int i)
 {
-	t_philo philo;
+	t_philo	philo;
 
 	philo.id = i + 1;
 	philo.count_eat = 0;
@@ -50,12 +45,11 @@ t_philo set_philos(t_rules *rules, int i)
 	else
 		philo.right = philo.id - 2;
 	philo.left = philo.id - 1;
-	philo.right_hand = 0;
-	philo.left_hand = 0;
+	philo.rules = rules;
 	return (philo);
 }
 
-int create_thread(pthread_t *thread, t_philo *philos, t_rules *rules)
+int	create_thread(pthread_t *thread, t_philo *philos, t_rules *rules)
 {
 	int	i;
 
@@ -64,17 +58,15 @@ int create_thread(pthread_t *thread, t_philo *philos, t_rules *rules)
 	while (i < rules->num_philosophers)
 	{
 		philos[i] = set_philos(rules, i);
-		philos[i].rules = rules;
-		if (pthread_create(&thread[i], NULL, life_loop, (void *)&philos[i]) != 0 \
-		|| pthread_detach(thread[i]) != 0)
+		if (pthread_create(&thread[i], NULL, life_loop, \
+		(void *)&philos[i]) != 0 || pthread_detach(thread[i]) != 0)
 		{
 			free(thread);
 			return (1);
 		}
 		i++;
-		usleep(100);
 	}
-	while (!rules->philo_died)
+	while (rules->philo_over < rules->num_philosophers)
 	{
 	}
 	return (0);
@@ -96,11 +88,8 @@ int	make_thread(t_rules *rules)
 		return (1);
 	}
 	if (create_thread(thread, philos, rules))
-	{
-		free(thread);
-		free(philos);
 		print_error("CREATE_THREAD_ERROR");
-		return (1);
-	}
+	free(thread);
+	free(philos);
 	return (0);
 }

@@ -6,45 +6,46 @@
 /*   By: hyospark <hyospark@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/15 13:41:20 by hyospark          #+#    #+#             */
-/*   Updated: 2021/09/17 19:47:33 by hyospark         ###   ########.fr       */
+/*   Updated: 2021/10/03 01:40:04 by hyospark         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-int	check_starv_eat(long comp, t_philo *philo)
+int	check_starv_eat(t_philo *ph)
 {
-	if (comp > philo->rules->time_to_die)
+	long long		comp;
+	struct timeval	starv;
+
+	gettimeofday(&starv, NULL);
+	comp = cal_micro(starv, ph->last_eat);
+	if (comp + ph->rules->time_to_eat > ph->rules->time_to_die)
 	{
-		philo->rules->philo_died = 1;
+		while (comp < ph->rules->time_to_die)
+		{
+			gettimeofday(&starv, NULL);
+			comp = cal_micro(starv, ph->last_eat);
+		}
+		put_down(ph);
+		log_died(ph);
 		return (1);
 	}
 	return (0);
 }
 
-int	check_starv_sleep(struct timeval begin, struct timeval end, t_philo *ph)
+int	check_starv_sleep(struct timeval starv, t_philo *ph)
 {
-	int comp;
+	long long		comp;
 
-	comp = cal_micro(begin, end);
+	comp = cal_micro(starv, ph->last_eat);
 	if ((comp + ph->rules->time_to_sleep) > ph->rules->time_to_die)
 	{
-		if (comp > ph->rules->time_to_die)
+		while (comp < ph->rules->time_to_die)
 		{
-			printf("just died %d\n", ph->id);
-			log_died(ph, begin);
+			gettimeofday(&starv, NULL);
+			comp = cal_micro(starv, ph->last_eat);
 		}
-		else
-		{
-			printf("sleep over dead %d\n", ph->id);
-			log_sleeping(ph, begin);
-			while (comp <= ph->rules->time_to_die)
-			{
-				gettimeofday(&begin, NULL);
-				comp = cal_micro(begin, end);
-				usleep(100);
-			}
-		}
+		log_died(ph);
 		return (1);
 	}
 	return (0);

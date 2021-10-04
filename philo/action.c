@@ -6,63 +6,58 @@
 /*   By: hyospark <hyospark@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/12 15:54:47 by hyospark          #+#    #+#             */
-/*   Updated: 2021/09/15 21:13:56 by hyospark         ###   ########.fr       */
+/*   Updated: 2021/10/03 01:41:30 by hyospark         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-struct timeval	eating(t_philo *philo, struct timeval last_eat)
+void	eating(t_philo *philo)
 {
-	long starved;
-	struct timeval eat;
-	struct timeval fork;
+	long long		starv;
+	struct timeval	eat;
 
-	gettimeofday(&fork, NULL);
-	log_fork(philo, fork);
-	starved = cal_micro(fork, last_eat);
-	if (check_starv_eat(starved, philo))
-	{
-		fork.tv_sec = -1;
-		return (fork);
-	}
-	gettimeofday(&eat, NULL);
-	last_eat = eat;
-	log_eating(philo, eat);
-	starved = 0;
-	while (starved <= philo->rules->time_to_eat + 100)
+	log_print(philo, "%ld %d has taken a fork\n");
+	philo->last_eat = log_print(philo, "%ld %d is eating\n");
+	if (check_starv_eat(philo))
+		return ;
+	starv = 0;
+	while (starv <= (long long)philo->rules->time_to_eat)
 	{
 		gettimeofday(&eat, NULL);
-		starved = cal_micro(eat, last_eat);
+		starv = cal_micro(eat, philo->last_eat);
 	}
 	put_down(philo);
-	return (fork);
+	sleeping(philo);
+	return ;
 }
 
-int	sleeping(t_philo *philo, struct timeval last_eat)
+void	sleeping(t_philo *philo)
 {
 	struct timeval	sleeping;
 	struct timeval	start;
-	long			starved;
+	long long		starv;
 
-	gettimeofday(&sleeping, NULL);
-	log_sleeping(philo, sleeping);
-	if (check_starv_sleep(sleeping ,last_eat, philo))
-		return (1);
+	if (philo->rules->philo_died)
+		return ;
+	sleeping = log_print(philo, "%ld %d is sleeping\n");
+	if (check_starv_sleep(sleeping, philo))
+		return ;
 	gettimeofday(&start, NULL);
-	starved = 0;
-	while (starved <= philo->rules->time_to_sleep)
+	starv = 0;
+	while (starv <= (long long)philo->rules->time_to_sleep)
 	{
 		gettimeofday(&start, NULL);
-		starved = cal_micro(start, sleeping);
+		starv = cal_micro(start, sleeping);
 	}
-	return (0);
+	thinking(philo);
+	return ;
 }
 
 void	thinking(t_philo *philo)
 {
-	struct timeval think;
-
-	gettimeofday(&think, NULL);
-	log_thinking(philo, think);
+	if (philo->rules->philo_died)
+		return ;
+	log_print(philo, "%ld %d is thinking\n");
+	return ;
 }
