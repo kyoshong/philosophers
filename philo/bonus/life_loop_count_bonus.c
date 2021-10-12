@@ -1,26 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   life_loop_count.c                                  :+:      :+:    :+:   */
+/*   life_loop_count_bonus.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hyospark <hyospark@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/14 15:42:31 by hyospark          #+#    #+#             */
-/*   Updated: 2021/10/03 01:43:12 by hyospark         ###   ########.fr       */
+/*   Updated: 2021/10/12 14:08:46 by hyospark         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philo.h"
+#include "philo_bonus.h"
 
 void	count_eat(t_philo *philo)
 {
 	if (++philo->count_eat == philo->rules->num_of_must_eat)
 	{
-		pthread_mutex_lock(&philo->rules->counting_eat);
-		philo->rules->full_philos++;
-		if (philo->rules->full_philos == philo->rules->num_philosophers)
-			philo->rules->philo_died = 1;
-		pthread_mutex_unlock(&philo->rules->counting_eat);
+		// sem_wait(philo->rules->cunt_eat);
+		// philo->rules->full_philos++;
+		// if (philo->rules->full_philos == philo->rules->num_philos)
+		// 	philo->rules->philo_died = 1;
+		// sem_post(philo->rules->cunt_eat);
 	}
 }
 
@@ -30,19 +30,16 @@ void	*life_loop_count(void *philos)
 
 	philo = philos;
 	gettimeofday(&(philo->last_eat), NULL);
-	while (!(philo->rules->philo_died))
-	{
-		pick_up(philo);
-		eating(philo);
-		count_eat(philo);
-		sleeping(philo);
-		thinking(philo);
-	}
-	if (philo->rules->full_philos != philo->rules->num_philosophers)
-		log_died(philo);
-	pthread_mutex_lock(&(philo->rules->count_over));
-	philo->rules->philo_over++;
-	pthread_mutex_unlock(&(philo->rules->count_over));
+	// while (!(philo->rules->philo_died))
+	// {
+	// 	pick_up(philo);
+	// 	eating(philo);
+	// 	count_eat(philo);
+	// 	sleeping(philo);
+	// 	thinking(philo);
+	// }
+	// if (philo->rules->full_philos != philo->rules->num_philos)
+	// 	log_died(philo);
 	return (philos);
 }
 
@@ -52,7 +49,7 @@ int	create_thread_limit(pthread_t *thread, t_philo *philos, t_rules *rules)
 
 	i = 0;
 	gettimeofday(&(rules->stamp), NULL);
-	while (i < rules->num_philosophers)
+	while (i < rules->num_philos)
 	{
 		philos[i] = set_philos(rules, i);
 		if (pthread_create(&thread[i], NULL, life_loop_count, \
@@ -64,11 +61,11 @@ int	create_thread_limit(pthread_t *thread, t_philo *philos, t_rules *rules)
 		usleep(10);
 		i++;
 	}
-	while (rules->philo_over < rules->num_philosophers)
-	{
-	}
-	if (rules->full_philos == rules->num_philosophers)
-		printf("ㄲㅓ어억\n");
+	// while (rules->philo_over < rules->num_philos)
+	// {
+	// }
+	// if (rules->full_philos == rules->num_philos)
+	// 	printf("ㄲㅓ어억\n");
 	return (0);
 }
 
@@ -77,10 +74,10 @@ int	make_limit_thread(t_rules *rules)
 	pthread_t	*thread;
 	t_philo		*philos;
 
-	thread = (pthread_t *)malloc(sizeof(pthread_t) * rules->num_philosophers);
+	thread = (pthread_t *)malloc(sizeof(pthread_t) * rules->num_philos);
 	if (thread == NULL)
 		return (1);
-	philos = (t_philo *)malloc(sizeof(t_philo) * rules->num_philosophers);
+	philos = (t_philo *)malloc(sizeof(t_philo) * rules->num_philos);
 	if (philos == NULL)
 	{
 		print_error("CREATE_PHILOS_ERROR");

@@ -1,28 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   action.c                                           :+:      :+:    :+:   */
+/*   action_bonus.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hyospark <hyospark@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/12 15:54:47 by hyospark          #+#    #+#             */
-/*   Updated: 2021/10/12 18:41:23 by hyospark         ###   ########.fr       */
+/*   Updated: 2021/10/12 18:22:55 by hyospark         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philo.h"
-
-void	count_eat(t_philo *philo)
-{
-	if (++philo->count_eat == philo->rules->num_of_must_eat)
-	{
-		pthread_mutex_lock(&philo->rules->counting_eat);
-		philo->rules->full_philos++;
-		if (philo->rules->full_philos == philo->rules->num_philosophers)
-			philo->rules->philo_died = 1;
-		pthread_mutex_unlock(&philo->rules->counting_eat);
-	}
-}
+#include "philo_bonus.h"
 
 void	eating(t_philo *philo)
 {
@@ -40,8 +28,6 @@ void	eating(t_philo *philo)
 		starv = cal_micro(eat, philo->last_eat);
 	}
 	put_down(philo);
-	if (philo->rules->num_of_must_eat > 0)
-		count_eat(philo);
 	sleeping(philo);
 	return ;
 }
@@ -52,8 +38,6 @@ void	sleeping(t_philo *philo)
 	struct timeval	start;
 	long long		starv;
 
-	if (philo->rules->philo_died)
-		return ;
 	sleeping = log_print(philo, "%ld %d is sleeping\n");
 	if (check_starv_sleep(sleeping, philo))
 		return ;
@@ -70,8 +54,6 @@ void	sleeping(t_philo *philo)
 
 void	thinking(t_philo *philo)
 {
-	if (philo->rules->philo_died)
-		return ;
 	log_print(philo, "%ld %d is thinking\n");
 	return ;
 }

@@ -6,11 +6,23 @@
 /*   By: hyospark <hyospark@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/15 14:10:07 by hyospark          #+#    #+#             */
-/*   Updated: 2021/10/03 01:38:43 by hyospark         ###   ########.fr       */
+/*   Updated: 2021/10/12 18:35:35 by hyospark         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
+
+void	pick_up(t_philo *philo)
+{
+	pthread_mutex_lock(&(philo->rules->fork_list[philo->right]));
+	pthread_mutex_lock(&(philo->rules->fork_list[philo->left]));
+}
+
+void	put_down(t_philo *philo)
+{
+	pthread_mutex_unlock(&(philo->rules->fork_list[philo->right]));
+	pthread_mutex_unlock(&(philo->rules->fork_list[philo->left]));
+}
 
 int	init_mutex(t_rules *rules)
 {
@@ -18,8 +30,6 @@ int	init_mutex(t_rules *rules)
 
 	i = 0;
 	if (pthread_mutex_init(&rules->print_log, NULL) != 0)
-		return (1);
-	if (pthread_mutex_init(&(rules->put_down), NULL) != 0)
 		return (1);
 	if (pthread_mutex_init(&(rules->counting_eat), NULL) != 0)
 		return (1);
@@ -40,8 +50,6 @@ int	mutex_unlock_all(t_rules *rules)
 	i = 0;
 	if (pthread_mutex_unlock(&rules->print_log) != 0)
 		return (1);
-	if (pthread_mutex_unlock(&(rules->put_down)) != 0)
-		return (1);
 	if (pthread_mutex_unlock(&(rules->counting_eat)) != 0)
 		return (1);
 	if (pthread_mutex_unlock(&(rules->count_over)) != 0)
@@ -60,8 +68,6 @@ int	mutex_destroy_all(t_rules *rules)
 
 	i = 0;
 	if (pthread_mutex_destroy(&(rules->print_log)) != 0)
-		return (1);
-	if (pthread_mutex_destroy(&(rules->put_down)) != 0)
 		return (1);
 	if (pthread_mutex_destroy(&(rules->counting_eat)) != 0)
 		return (1);

@@ -1,41 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   philo.c                                            :+:      :+:    :+:   */
+/*   cal_bonus.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hyospark <hyospark@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/08/14 18:37:28 by hyospark          #+#    #+#             */
-/*   Updated: 2021/10/08 20:28:40 by hyospark         ###   ########.fr       */
+/*   Created: 2021/09/13 18:06:13 by hyospark          #+#    #+#             */
+/*   Updated: 2021/10/12 18:14:12 by hyospark         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philo.h"
+#include "philo_bonus.h"
 
-int	check_args(int argc, char const *argv[])
+long long	cal_micro(struct timeval std)
 {
-	if (argc < 5 || argc > 6)
-	{
-		print_error("ARG_ERROR");
-		return (1);
-	}
-	argc--;
-	while (argc > 0)
-	{
-		if (ft_atoi(argv[argc]) < 1)
-		{
-			print_error("ARG_NUM_ERROR");
-			return (1);
-		}
-		argc--;
-	}
-	return (0);
+	struct timeval now;
+
+	gettimeofday(&now, NULL);
+	return (((now.tv_sec - std.tv_sec) * 1000000) \
+	+ (now.tv_usec - std.tv_usec));
 }
 
-int	main(int argc, char const *argv[])
+long	cal_milli(struct timeval std)
 {
-	if (check_args(argc, argv))
-		return (1);
-	lifes(argc, argv);
-	return (0);
+	struct timeval now;
+
+	gettimeofday(&now, NULL);
+	return (((now.tv_sec - std.tv_sec) * 1000) \
+	+ ((now.tv_usec - std.tv_usec) / 1000));
 }

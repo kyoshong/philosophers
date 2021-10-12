@@ -6,7 +6,7 @@
 /*   By: hyospark <hyospark@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/06 21:04:38 by hyospark          #+#    #+#             */
-/*   Updated: 2021/10/03 01:42:23 by hyospark         ###   ########.fr       */
+/*   Updated: 2021/10/12 18:39:45 by hyospark         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,11 @@ void	*life_loop(void *philos)
 	{
 		pick_up(philo);
 		eating(philo);
+	}
+	if (philo->rules->full_philos != philo->rules->num_philosophers)
+	{
+		log_died(philo);
+		philo->rules->full_philos = 0;
 	}
 	pthread_mutex_lock(&(philo->rules->count_over));
 	++philo->rules->philo_over;
@@ -69,6 +74,8 @@ int	create_thread(pthread_t *thread, t_philo *philos, t_rules *rules)
 	while (rules->philo_over < rules->num_philosophers)
 	{
 	}
+	if (rules->full_philos == rules->num_philosophers)
+		printf("I am full\n");
 	return (0);
 }
 
