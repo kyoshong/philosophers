@@ -6,7 +6,7 @@
 /*   By: hyospark <hyospark@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/18 00:58:10 by hyospark          #+#    #+#             */
-/*   Updated: 2021/10/12 18:18:25 by hyospark         ###   ########.fr       */
+/*   Updated: 2021/10/12 19:51:37 by hyospark         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ struct timeval	log_print(t_philo *philo, char *msg)
 
 	sem_wait(philo->rules->print_log);
 	gettimeofday(&time, NULL);
-		printf(msg, cal_milli(time, philo->rules->stamp), philo->id);
+	printf(msg, cal_micro(time, philo->rules->stamp) / 1000, philo->id);
 	sem_post(philo->rules->print_log);
 	return (time);
 }
@@ -30,7 +30,7 @@ void	log_died(t_philo *philo)
 	sem_wait(philo->rules->print_log);
 	gettimeofday(&time, NULL);
 		printf("%ld %d died\n", \
-		cal_milli(time, philo->rules->stamp), philo->id);
+		cal_micro(time, philo->rules->stamp) / 1000, philo->id);
 	sem_post(philo->rules->print_log);
 }
 

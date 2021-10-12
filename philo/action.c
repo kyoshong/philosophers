@@ -6,7 +6,7 @@
 /*   By: hyospark <hyospark@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/12 15:54:47 by hyospark          #+#    #+#             */
-/*   Updated: 2021/10/12 18:41:23 by hyospark         ###   ########.fr       */
+/*   Updated: 2021/10/12 19:47:31 by hyospark         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,21 +57,25 @@ void	sleeping(t_philo *philo)
 	sleeping = log_print(philo, "%ld %d is sleeping\n");
 	if (check_starv_sleep(sleeping, philo))
 		return ;
-	gettimeofday(&start, NULL);
 	starv = 0;
-	while (starv <= (long long)philo->rules->time_to_sleep)
+	while (starv <= philo->rules->time_to_sleep)
 	{
 		gettimeofday(&start, NULL);
 		starv = cal_micro(start, sleeping);
 	}
+	// printf("sleeping : %lld\n", cal_micro(sleeping, philo->last_eat));
+	// printf("starv : %lld\n", starv);
 	thinking(philo);
 	return ;
 }
 
 void	thinking(t_philo *philo)
 {
+	struct timeval	thinking;
+
 	if (philo->rules->philo_died)
 		return ;
-	log_print(philo, "%ld %d is thinking\n");
+	thinking = log_print(philo, "%ld %d is thinking\n");
+	// printf("thinking : %lld\n",cal_micro(thinking, philo->last_eat));
 	return ;
 }

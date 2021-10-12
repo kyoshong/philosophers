@@ -6,7 +6,7 @@
 /*   By: hyospark <hyospark@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/14 18:37:26 by hyospark          #+#    #+#             */
-/*   Updated: 2021/10/12 18:22:26 by hyospark         ###   ########.fr       */
+/*   Updated: 2021/10/12 19:58:02 by hyospark         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,9 +46,8 @@ void			eating(t_philo *philo);
 void			sleeping(t_philo *philo);
 void			thinking(t_philo *philo);
 long long		cal_micro(struct timeval now, struct timeval std);
-long			cal_milli(struct timeval now, struct timeval std);
-int				check_starv_eat(t_philo *philo);
-int				check_starv_sleep(t_philo *ph);
+int				check_starv_eat(t_philo *ph);
+int				check_starv_sleep(struct timeval starv, t_philo *ph);
 void			count_eat(t_philo *philo);
 void			*life_loop_count(void *philos);
 int				create_philos_limit(pthread_t *thread, t_philo *philos, \
