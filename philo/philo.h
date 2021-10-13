@@ -6,7 +6,7 @@
 /*   By: hyospark <hyospark@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/14 18:37:26 by hyospark          #+#    #+#             */
-/*   Updated: 2021/10/14 04:03:02 by hyospark         ###   ########.fr       */
+/*   Updated: 2021/10/14 04:14:04 by hyospark         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,5 +73,6 @@ void			lifes(int argc, char const *argv[]);
 int				init_mutex(t_rules *rules);
 int				mutex_destroy_all(t_rules *rules);
 int				mutex_unlock_all(t_rules *rules);
+int				init_thread(t_rules *rules);
 
 #endif

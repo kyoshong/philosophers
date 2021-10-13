@@ -6,7 +6,7 @@
 #    By: hyospark <hyospark@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/08/18 00:20:00 by hyospark          #+#    #+#              #
-#    Updated: 2021/10/14 01:11:59 by hyospark         ###   ########.fr        #
+#    Updated: 2021/10/14 04:15:28 by hyospark         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -28,8 +28,7 @@ B_SOURCE = bonus/philo_bonus.c \
 		bonus/utils_bonus.c \
 		bonus/life_loop_bonus.c \
 		bonus/sema_bonus.c \
-		bonus/action_bonus.c \
-		bonus/check_starved_bonus.c
+		bonus/action_bonus.c
 B_OBJECT = $(B_SOURCE:.c=.o)
 B_OUT = philo_bonus
 

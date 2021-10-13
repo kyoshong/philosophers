@@ -6,7 +6,7 @@
 /*   By: hyospark <hyospark@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/14 18:37:26 by hyospark          #+#    #+#             */
-/*   Updated: 2021/10/14 03:39:36 by hyospark         ###   ########.fr       */
+/*   Updated: 2021/10/14 04:14:59 by hyospark         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,8 +52,6 @@ void			eating(t_philo *philo);
 void			sleeping(t_philo *philo);
 void			thinking(t_philo *philo);
 long			cal_micro(struct timeval now, struct timeval std);
-int				check_starv_eat(t_philo *ph);
-int				check_starv_sleep(struct timeval starv, t_philo *ph);
 t_philo			set_philos(t_rules *rules, int i);
 struct timeval	log_print(t_philo *philo, char *msg);
 void			log_died(t_philo *philo);

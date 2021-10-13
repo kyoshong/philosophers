@@ -6,7 +6,7 @@
 /*   By: hyospark <hyospark@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/15 14:10:07 by hyospark          #+#    #+#             */
-/*   Updated: 2021/10/14 04:04:13 by hyospark         ###   ########.fr       */
+/*   Updated: 2021/10/14 04:22:30 by hyospark         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,12 +59,7 @@ void	*count_eat_sema(void *rule)
 		sem_wait(rules->cunt_eat);
 		i++;
 	}
-	if (!rules->philo_died)
-	{
-		rules->philo_died = 1;
-		sem_wait(rules->print_log);
-		printf("I am full\n");
-	}
+	rules->philo_died = 1;
 	return (rule);
 }
 
