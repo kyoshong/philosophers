@@ -6,7 +6,7 @@
 /*   By: hyospark <hyospark@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/15 13:41:20 by hyospark          #+#    #+#             */
-/*   Updated: 2021/10/12 19:58:31 by hyospark         ###   ########.fr       */
+/*   Updated: 2021/10/14 04:03:20 by hyospark         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ int	check_starv_eat(t_philo *ph)
 			gettimeofday(&starv, NULL);
 			comp = cal_micro(starv, ph->last_eat);
 		}
-		put_down(ph);
+		sem_post(ph->rules->bch_forks);
 		log_died(ph);
 		return (1);
 	}

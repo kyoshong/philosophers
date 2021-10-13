@@ -6,7 +6,7 @@
 #    By: hyospark <hyospark@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/08/18 00:20:00 by hyospark          #+#    #+#              #
-#    Updated: 2021/10/12 18:42:56 by hyospark         ###   ########.fr        #
+#    Updated: 2021/10/14 01:11:59 by hyospark         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,7 +18,6 @@ SOURCE = philo.c \
 		utils.c \
 		life_loop.c \
 		action.c \
-		cal.c \
 		mutex.c
 LIB = -lpthread
 OUT = philo
@@ -28,11 +27,8 @@ B_SOURCE = bonus/philo_bonus.c \
 		bonus/log_bonus.c \
 		bonus/utils_bonus.c \
 		bonus/life_loop_bonus.c \
-		bonus/life_loop_count_bonus.c \
-		bonus/mutex_fork_bonus.c \
 		bonus/sema_bonus.c \
 		bonus/action_bonus.c \
-		bonus/cal_bonus.c \
 		bonus/check_starved_bonus.c
 B_OBJECT = $(B_SOURCE:.c=.o)
 B_OUT = philo_bonus

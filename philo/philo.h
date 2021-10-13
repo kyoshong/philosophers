@@ -6,7 +6,7 @@
 /*   By: hyospark <hyospark@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/14 18:37:26 by hyospark          #+#    #+#             */
-/*   Updated: 2021/10/12 19:51:14 by hyospark         ###   ########.fr       */
+/*   Updated: 2021/10/14 04:03:02 by hyospark         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@
 
 typedef struct s_rules
 {
-	int				num_philosophers;
+	int				num_philos;
 	int				time_to_die;
 	int				time_to_eat;
 	int				time_to_sleep;
@@ -34,6 +34,8 @@ typedef struct s_rules
 	int				full_philos;
 	int				philo_died;
 	int				philo_over;
+	pthread_t		*thread;
+	pthread_t		*s_thread;
 }			t_rules;
 
 typedef struct s_philo

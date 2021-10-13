@@ -6,7 +6,7 @@
 /*   By: hyospark <hyospark@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/18 01:16:17 by hyospark          #+#    #+#             */
-/*   Updated: 2021/10/12 18:49:24 by hyospark         ###   ########.fr       */
+/*   Updated: 2021/10/14 04:01:32 by hyospark         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,9 +19,24 @@ void	clean_all(t_rules *rules)
 	mutex_destroy_all(rules);
 }
 
+int	init_thread(t_rules *rules)
+{
+	rules->thread = (pthread_t *)malloc(sizeof(pthread_t) * rules->num_philos);
+	if (rules->thread == NULL)
+		return (1);
+	rules->s_thread = \
+	(pthread_t *)malloc(sizeof(pthread_t) * rules->num_philos);
+	if (rules->s_thread == NULL)
+	{
+		free(rules->thread);
+		return (1);
+	}
+	return (0);
+}
+
 int	set_rules(int argc, char const *argv[], t_rules *rules)
 {
-	rules->num_philosophers = ft_atoi(argv[1]);
+	rules->num_philos = ft_atoi(argv[1]);
 	rules->time_to_die = ft_atoi(argv[2]) * 1000;
 	rules->time_to_eat = ft_atoi(argv[3]) * 1000;
 	rules->time_to_sleep = ft_atoi(argv[4]) * 1000;
@@ -33,10 +48,10 @@ int	set_rules(int argc, char const *argv[], t_rules *rules)
 	else
 		rules->num_of_must_eat = -1;
 	rules->fork_list = (pthread_mutex_t *) \
-	malloc(sizeof(pthread_mutex_t) * (rules->num_philosophers));
-	if (rules->fork_list == NULL)
+	malloc(sizeof(pthread_mutex_t) * (rules->num_philos));
+	if (rules->fork_list == NULL || init_mutex(rules))
 	{
-		print_error("FORK_MALLOC_ERROR\n");
+		print_error("SET_RULES_ERROR\n");
 		return (1);
 	}
 	return (0);
@@ -45,18 +60,10 @@ int	set_rules(int argc, char const *argv[], t_rules *rules)
 void	lifes(int argc, char const *argv[])
 {
 	t_rules	rules;
-	int		error;
 
 	if (set_rules(argc, argv, &rules))
 		return ;
-	if (init_mutex(&rules))
-		print_error("MUTEX_INIT_ERROR");
-	else
-	{
-		error = make_thread(&rules);
-		if (error)
-			print_error("THREAD_ERROR");
-		usleep(100);
-	}
+	if (make_thread(&rules))
+		print_error("THREAD_ERROR");
 	clean_all(&rules);
 }

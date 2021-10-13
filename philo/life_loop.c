@@ -6,7 +6,7 @@
 /*   By: hyospark <hyospark@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/06 21:04:38 by hyospark          #+#    #+#             */
-/*   Updated: 2021/10/12 18:39:45 by hyospark         ###   ########.fr       */
+/*   Updated: 2021/10/14 04:02:40 by hyospark         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,11 +24,8 @@ void	*life_loop(void *philos)
 		log_died(philo);
 	}
 	while (!(philo->rules->philo_died))
-	{
-		pick_up(philo);
 		eating(philo);
-	}
-	if (philo->rules->full_philos != philo->rules->num_philosophers)
+	if (philo->rules->full_philos != philo->rules->num_philos)
 	{
 		log_died(philo);
 		philo->rules->full_philos = 0;
@@ -46,7 +43,7 @@ t_philo	set_philos(t_rules *rules, int i)
 	philo.id = i + 1;
 	philo.count_eat = 0;
 	if (philo.id == 1)
-		philo.right = rules->num_philosophers - 1;
+		philo.right = rules->num_philos - 1;
 	else
 		philo.right = philo.id - 2;
 	philo.left = philo.id - 1;
@@ -54,49 +51,74 @@ t_philo	set_philos(t_rules *rules, int i)
 	return (philo);
 }
 
-int	create_thread(pthread_t *thread, t_philo *philos, t_rules *rules)
+void	*check_starv_thread(void *philos)
+{
+	t_philo			*philo;
+	struct timeval	time;
+	long long		comp;
+
+	philo = philos;
+	while (!philo->rules->philo_died)
+	{
+		gettimeofday(&time, NULL);
+		comp = cal_micro(time, philo->last_eat);
+		if (comp > philo->rules->time_to_die)
+		{
+			log_died(philo);
+			break ;
+		}
+		usleep(100);
+	}
+	return (philos);
+}
+
+int	create_thread(t_philo *philos, t_rules *rules)
 {
 	int	i;
 
 	i = 0;
 	gettimeofday(&(rules->stamp), NULL);
-	while (i < rules->num_philosophers)
+	while (i < rules->num_philos)
 	{
 		philos[i] = set_philos(rules, i);
-		if (pthread_create(&thread[i], NULL, life_loop, \
-		(void *)&philos[i]) != 0 || pthread_detach(thread[i]) != 0)
-		{
-			free(thread);
+		if (pthread_create(&rules->thread[i], NULL, life_loop, \
+		(void *)&philos[i]) != 0 || pthread_detach(rules->thread[i]) != 0)
 			return (1);
-		}
 		i++;
 	}
-	while (rules->philo_over < rules->num_philosophers)
+	i = 0;
+	while (i < rules->num_philos)
+	{
+		if (pthread_create(&rules->s_thread[i], NULL, check_starv_thread, \
+		(void *)&philos[i]) != 0 || pthread_detach(rules->s_thread[i]) != 0)
+			return (1);
+		i++;
+	}
+	while (rules->philo_over < rules->num_philos)
 	{
 	}
-	if (rules->full_philos == rules->num_philosophers)
-		printf("I am full\n");
 	return (0);
 }
 
 int	make_thread(t_rules *rules)
 {
-	pthread_t	*thread;
 	t_philo		*philos;
 
-	thread = (pthread_t *)malloc(sizeof(pthread_t) * rules->num_philosophers);
-	if (thread == NULL)
+	if (init_thread(rules))
 		return (1);
-	philos = (t_philo *)malloc(sizeof(t_philo) * rules->num_philosophers);
+	philos = (t_philo *)malloc(sizeof(t_philo) * rules->num_philos);
 	if (philos == NULL)
 	{
-		print_error("CREATE_PHILOS_ERROR");
-		free(thread);
+		free(rules->thread);
+		free(rules->s_thread);
 		return (1);
 	}
-	if (create_thread(thread, philos, rules))
-		print_error("CREATE_THREAD_ERROR");
-	free(thread);
+	if (create_thread(philos, rules))
+		return (1);
+	if (rules->full_philos == rules->num_philos)
+		printf("I am full\n");
+	free(rules->thread);
 	free(philos);
+	free(rules->s_thread);
 	return (0);
 }

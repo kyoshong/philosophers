@@ -6,7 +6,7 @@
 /*   By: hyospark <hyospark@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/12 15:54:47 by hyospark          #+#    #+#             */
-/*   Updated: 2021/10/12 19:23:44 by hyospark         ###   ########.fr       */
+/*   Updated: 2021/10/14 03:40:40 by hyospark         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,17 +17,18 @@ void	eating(t_philo *philo)
 	long long		starv;
 	struct timeval	eat;
 
+	sem_wait(philo->rules->bch_forks);
 	log_print(philo, "%ld %d has taken a fork\n");
 	philo->last_eat = log_print(philo, "%ld %d is eating\n");
-	if (check_starv_eat(philo))
-		return ;
 	starv = 0;
 	while (starv <= (long long)philo->rules->time_to_eat)
 	{
 		gettimeofday(&eat, NULL);
 		starv = cal_micro(eat, philo->last_eat);
 	}
-	put_down(philo);
+	if (philo->rules->num_of_must_eat > -1)
+		sem_post(philo->rules->cunt_eat);
+	sem_post(philo->rules->bch_forks);
 	sleeping(philo);
 	return ;
 }
@@ -39,8 +40,6 @@ void	sleeping(t_philo *philo)
 	long long		starv;
 
 	sleeping = log_print(philo, "%ld %d is sleeping\n");
-	if (check_starv_sleep(sleeping, philo))
-		return ;
 	gettimeofday(&start, NULL);
 	starv = 0;
 	while (starv <= (long long)philo->rules->time_to_sleep)
