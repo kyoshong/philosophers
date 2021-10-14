@@ -6,7 +6,7 @@
 /*   By: hyospark <hyospark@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/06 21:04:38 by hyospark          #+#    #+#             */
-/*   Updated: 2021/10/14 04:02:40 by hyospark         ###   ########.fr       */
+/*   Updated: 2021/10/14 20:01:30 by hyospark         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,6 @@ void	*life_loop(void *philos)
 	if (philo->left == philo->right)
 	{
 		usleep(philo->rules->time_to_die);
-		log_died(philo);
 	}
 	while (!(philo->rules->philo_died))
 		eating(philo);
@@ -48,6 +47,7 @@ t_philo	set_philos(t_rules *rules, int i)
 		philo.right = philo.id - 2;
 	philo.left = philo.id - 1;
 	philo.rules = rules;
+	pthread_mutex_init(&philo.eating, NULL);
 	return (philo);
 }
 
@@ -61,12 +61,15 @@ void	*check_starv_thread(void *philos)
 	while (!philo->rules->philo_died)
 	{
 		gettimeofday(&time, NULL);
+		pthread_mutex_lock(&philo->eating);
 		comp = cal_micro(time, philo->last_eat);
 		if (comp > philo->rules->time_to_die)
 		{
 			log_died(philo);
+			pthread_mutex_unlock(&philo->eating);
 			break ;
 		}
+		pthread_mutex_unlock(&philo->eating);
 		usleep(100);
 	}
 	return (philos);
@@ -85,6 +88,7 @@ int	create_thread(t_philo *philos, t_rules *rules)
 		(void *)&philos[i]) != 0 || pthread_detach(rules->thread[i]) != 0)
 			return (1);
 		i++;
+		usleep(100);
 	}
 	i = 0;
 	while (i < rules->num_philos)
@@ -117,8 +121,6 @@ int	make_thread(t_rules *rules)
 		return (1);
 	if (rules->full_philos == rules->num_philos)
 		printf("I am full\n");
-	free(rules->thread);
-	free(philos);
-	free(rules->s_thread);
+	thread_clean_all(philos);
 	return (0);
 }

@@ -37,6 +37,7 @@
 		"cdefs.h": "c",
 		"wait.h": "c",
 		"algorithm": "c",
-		"bitset": "c"
+		"bitset": "c",
+		"signal.h": "c"
 	},
 }

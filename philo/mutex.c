@@ -6,7 +6,7 @@
 /*   By: hyospark <hyospark@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/15 14:10:07 by hyospark          #+#    #+#             */
-/*   Updated: 2021/10/14 03:54:46 by hyospark         ###   ########.fr       */
+/*   Updated: 2021/10/14 18:29:13 by hyospark         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	pick_up(t_philo *philo)
 {
-	if (philo->id % 2)
+	if ((philo->rules->num_philos % 2) || (philo->id % 2))
 	{
 		pthread_mutex_lock(&(philo->rules->fork_list[philo->right]));
 		pthread_mutex_lock(&(philo->rules->fork_list[philo->left]));
@@ -26,6 +26,12 @@ void	pick_up(t_philo *philo)
 
 void	put_down(t_philo *philo)
 {
+	if ((philo->rules->num_philos % 2) || (philo->id % 2))
+	{
+		pthread_mutex_unlock(&(philo->rules->fork_list[philo->left]));
+		pthread_mutex_unlock(&(philo->rules->fork_list[philo->right]));
+		return ;
+	}
 	pthread_mutex_unlock(&(philo->rules->fork_list[philo->right]));
 	pthread_mutex_unlock(&(philo->rules->fork_list[philo->left]));
 }
@@ -43,7 +49,8 @@ int	init_mutex(t_rules *rules)
 		return (1);
 	while (i < rules->num_philos)
 	{
-		pthread_mutex_init(&(rules->fork_list[i]), NULL);
+		if (pthread_mutex_init(&(rules->fork_list[i]), NULL) != 0)
+			return (1);
 		i++;
 	}
 	return (0);

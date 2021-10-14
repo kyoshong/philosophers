@@ -6,7 +6,7 @@
 /*   By: hyospark <hyospark@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/12 15:54:47 by hyospark          #+#    #+#             */
-/*   Updated: 2021/10/14 03:40:40 by hyospark         ###   ########.fr       */
+/*   Updated: 2021/10/14 17:47:56 by hyospark         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,5 +54,6 @@ void	sleeping(t_philo *philo)
 void	thinking(t_philo *philo)
 {
 	log_print(philo, "%ld %d is thinking\n");
+	usleep(10);
 	return ;
 }

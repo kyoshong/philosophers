@@ -6,7 +6,7 @@
 /*   By: hyospark <hyospark@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/14 18:37:26 by hyospark          #+#    #+#             */
-/*   Updated: 2021/10/14 04:14:04 by hyospark         ###   ########.fr       */
+/*   Updated: 2021/10/14 19:54:28 by hyospark         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,14 +46,13 @@ typedef struct s_philo
 	int				right;
 	t_rules			*rules;
 	struct timeval	last_eat;
+	pthread_mutex_t	eating;
 }				t_philo;
 
 void			eating(t_philo *philo);
 void			sleeping(t_philo *philo);
 void			thinking(t_philo *philo);
 long long		cal_micro(struct timeval now, struct timeval std);
-int				check_starv_eat(t_philo *philo);
-int				check_starv_sleep(struct timeval starv, t_philo *ph);
 void			count_eat(t_philo *philo);
 void			*life_loop(void *philo);
 t_philo			set_philos(t_rules *rules, int i);
@@ -74,5 +73,6 @@ int				init_mutex(t_rules *rules);
 int				mutex_destroy_all(t_rules *rules);
 int				mutex_unlock_all(t_rules *rules);
 int				init_thread(t_rules *rules);
+void			thread_clean_all(t_philo *philo);
 
 #endif

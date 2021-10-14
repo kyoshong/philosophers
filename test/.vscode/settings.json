@@ -1,9 +1,0 @@
-{
-	"files.associations": {
-		"history.h": "c",
-		"readline.h": "c",
-		"__mutex_base": "cpp",
-		"atomic": "cpp",
-		"unistd.h": "c"
-	}
-}

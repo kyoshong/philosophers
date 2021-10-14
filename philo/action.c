@@ -6,7 +6,7 @@
 /*   By: hyospark <hyospark@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/12 15:54:47 by hyospark          #+#    #+#             */
-/*   Updated: 2021/10/14 03:54:46 by hyospark         ###   ########.fr       */
+/*   Updated: 2021/10/14 19:55:26 by hyospark         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,12 +31,16 @@ void	eating(t_philo *philo)
 
 	pick_up(philo);
 	log_print(philo, "%ld %d has taken a fork\n");
+	pthread_mutex_lock(&philo->eating);
 	philo->last_eat = log_print(philo, "%ld %d is eating\n");
+	pthread_mutex_unlock(&philo->eating);
 	starv = 0;
 	while (starv <= (long long)philo->rules->time_to_eat)
 	{
 		gettimeofday(&eat, NULL);
 		starv = cal_micro(eat, philo->last_eat);
+		if (philo->rules->philo_died)
+			break ;
 	}
 	if (philo->rules->num_of_must_eat > 0)
 		count_eat(philo);
