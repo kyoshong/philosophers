@@ -15,7 +15,7 @@ int main(int argc, char const *argv[])
 	if (return_pid == getpid())
 	{
 		printf("parent's process\n");
-		return_pid = waitpid(-1, &status, WNOHANG);
+		return_pid = wacitpid(-1, &status, WNOHANG);
 		printf("parent pid : %d\n", getpid());
 		printf("return_pid : %d\n", return_pid);
 		printf("status : %d\n", WTERMSIG(status));

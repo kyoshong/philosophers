@@ -31,6 +31,12 @@
 		"vector": "c",
 		"bit": "c",
 		"cmath": "c",
-		"stdio.h": "c"
+		"stdio.h": "c",
+		"philo_bonus.h": "c",
+		"semaphore.h": "c",
+		"cdefs.h": "c",
+		"wait.h": "c",
+		"algorithm": "c",
+		"bitset": "c"
 	},
 }
