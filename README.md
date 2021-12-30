@@ -1,6 +1,6 @@
 # philosophers
 Solving the Dining Philosopher Problem in C.  
-using Mutex, pthread, semaphore funcions
+Using Mutex, pthread, semaphore funcions
 
 ## Build and Run
 
